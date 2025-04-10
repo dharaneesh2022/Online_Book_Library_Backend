@@ -35,4 +35,16 @@ VALUES (1, 1);
 
 INSERT INTO users(name) value ('Dharaneesh'),('Kishore'),('Abi');
 
+CREATE TABLE IF NOT EXISTS returned_books (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  book_id INT NOT NULL,
+  returned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (book_id) REFERENCES books(id)
+);
+
+
+
+
 
