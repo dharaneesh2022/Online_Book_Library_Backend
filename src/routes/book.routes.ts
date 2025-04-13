@@ -1,19 +1,9 @@
-import express from 'express';
-import {
-  getAllBooks,
-  getBookById,
-  addBook,
-  updateBook,
-  deleteBook
-} from '../controllers/book.controller';
+import { Router } from 'express';
+import { handleBorrow, getBorrowedBooks } from '../controllers/borrow.controller';
 
-const router = express.Router();
+const router = Router();
 
-// Route definitions
-router.get('/', getAllBooks);
-router.get('/:id', getBookById);
-router.post('/', addBook);
-router.put('/:id', updateBook);
-router.delete('/:id', deleteBook);
+router.post('/:id', handleBorrow);
+router.get('/', getBorrowedBooks);
 
 export default router;

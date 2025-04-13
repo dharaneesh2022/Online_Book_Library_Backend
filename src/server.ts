@@ -1,22 +1,19 @@
 import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
 import bookRoutes from './routes/book.routes';
 import borrowRoutes from './routes/borrow.routes';
-import returnRoutes from './routes/return.routes'; // If created
-
+import userRoutes from './routes/user.routes';
+dotenv.config();
 const app = express();
-const PORT = 8080;
-
+app.use(cors());
 app.use(express.json());
-
-// Route setup
+app.get('/', (req, res) => {
+    res.send('Welcome to the Library API');
+  });
 app.use('/api/books', bookRoutes);
 app.use('/api/borrow', borrowRoutes);
-app.use('/api/return', returnRoutes); // Optional
+app.use('/api/users', userRoutes);
 
-app.get('/', (_req, res) => {
-  res.send('Library API Running');
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+const PORT = 3000;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

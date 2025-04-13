@@ -1,48 +1,25 @@
-import { Request, Response } from 'express';
-import * as BorrowModel from '../models/borrowedBook.model'; // assumes the file is named `borrowedbook.model.ts`
+import { RequestHandler } from 'express';
+import { borrowBook, getAllBorrowedBooks } from '../models/borrowed.model';
 
-// Borrow a book
-export const createBorrow = async (req: Request, res: Response) => {
-  const { user_id, book_id } = req.body;
-
+export const handleBorrow: RequestHandler = async (req, res): Promise<void> => {
   try {
-    await BorrowModel.borrowBook(user_id, book_id);
-    res.status(201).json({ message: 'Book borrowed successfully ✅' });
+    const bookId = parseInt(req.params.id);
+    const { userId } = req.body;
+
+    const result = await borrowBook(bookId, userId);
+    res.status(200).json({ message: 'Book borrowed successfully', result });
   } catch (error) {
-    res.status(500).json({ message: 'Error borrowing book', error });
+    console.error('Error borrowing book:', error);
+    res.status(500).json({ message: 'Something went wrong' });
   }
 };
 
-// Get all borrowed books
-export const getAllBorrowed = async (_req: Request, res: Response) => {
+export const getBorrowedBooks: RequestHandler = async (req, res): Promise<void> => {
   try {
-    const borrowedBooks = await BorrowModel.getBorrowedBooks();
-    res.status(200).json(borrowedBooks);
+    const books = await getAllBorrowedBooks();
+    res.status(200).json(books);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching borrowed books', error });
-  }
-};
-
-// Return a book
-export const returnBook = async (req: Request, res: Response) => {
-  const { user_id, book_id } = req.body;
-
-  try {
-    await BorrowModel.returnBook(user_id, book_id);
-    res.status(200).json({ message: 'Book returned successfully ✅' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error returning book', error });
-  }
-};
-
-// Delete a borrow record (if needed separately)
-export const deleteBorrow = async (req: Request, res: Response) => {
-  const borrowId = req.params.id;
-
-  try {
-    await BorrowModel.deleteBorrow(parseInt(borrowId)); // We'll add this in the model below
-    res.status(200).json({ message: 'Borrow record deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error deleting borrow record', error });
+    console.error('Error fetching borrowed books:', error);
+    res.status(500).json({ message: 'Something went wrong' });
   }
 };
