@@ -1,9 +1,18 @@
 import { Router } from 'express';
-import { handleBorrow, getBorrowedBooks } from '../controllers/borrow.controller';
+import {
+  fetchAllBooks,
+  fetchBookById,
+  addBook,
+  updateBook,
+  deleteBook
+} from '../controllers/book.controller';
 
 const router = Router();
 
-router.post('/:id', handleBorrow);
-router.get('/', getBorrowedBooks);
+router.get('/', fetchAllBooks); 
+router.get('/:id', fetchBookById);
+router.post('/', addBook);
+router.put('/:id', updateBook);
+router.delete('/:id', deleteBook);
 
 export default router;

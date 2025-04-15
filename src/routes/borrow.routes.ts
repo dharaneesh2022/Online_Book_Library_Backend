@@ -1,9 +1,14 @@
 import { Router } from 'express';
-import { handleBorrow, getBorrowedBooks } from '../controllers/borrow.controller';
+import {
+  handleBorrow,
+  handleReturnBook,
+  getBorrowedBooks
+} from '../controllers/borrow.controller';
 
 const router = Router();
 
-router.post('/:id', handleBorrow); // ✅ now this line will work
-router.get('/', getBorrowedBooks);
+router.post('/', handleBorrow);
+router.post('/return', handleReturnBook);
+router.get('/borrowed', getBorrowedBooks);
 
 export default router;
